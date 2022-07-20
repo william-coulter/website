@@ -1,16 +1,16 @@
 # Overview
 
-A site to put my resume and blogs!
+A site written by Will.
 
 ## Dependencies
 
-- npm
-- node 11+
+- npm (8+)
+- node (11+)
 
 ## Running Locally
 
-`npm run start`
+`make start`
 
 ## Deployment
 
-TODO!
+Deployed to Netlify. 
