@@ -6112,6 +6112,65 @@ var $author$project$Pages$Article$view = function (s) {
 			$elm$html$Html$text('Article: ' + s)
 		]);
 };
+var $elm$html$Html$a = _VirtualDom_node('a');
+var $elm$html$Html$Attributes$href = function (url) {
+	return A2(
+		$elm$html$Html$Attributes$stringProperty,
+		'href',
+		_VirtualDom_noJavaScriptUri(url));
+};
+var $author$project$Components$Link$link = function (_v0) {
+	var path = _v0.path;
+	var display = _v0.display;
+	return A2(
+		$elm$html$Html$a,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$href(path),
+				$elm$html$Html$Attributes$class('no-underline text-center text-heading2 hover:opacity-80')
+			]),
+		_List_fromArray(
+			[
+				$elm$html$Html$text(display)
+			]));
+};
+var $elm$html$Html$p = _VirtualDom_node('p');
+var $author$project$Components$Link$articleLink = function (_v0) {
+	var article = _v0.article;
+	var display = _v0.display;
+	var date = _v0.date;
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('flex flex-row justify-between')
+			]),
+		_List_fromArray(
+			[
+				$author$project$Components$Link$link(
+				{display: display, path: 'articles/' + article}),
+				A2(
+				$elm$html$Html$p,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('font-light text-primary opacity-80')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text(date)
+					]))
+			]));
+};
+var $author$project$Pages$Home$articleLinks = function () {
+	var render = function (opts) {
+		return A2($elm$core$List$map, $author$project$Components$Link$articleLink, opts);
+	};
+	return render(
+		_List_fromArray(
+			[
+				{article: 'determinism', date: '01 June 2021', display: 'A deterministic universe and what to do about it'}
+			]));
+}();
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $author$project$Pages$Home$heading = A2(
 	$elm$html$Html$h1,
@@ -6123,38 +6182,17 @@ var $author$project$Pages$Home$heading = A2(
 		[
 			$elm$html$Html$text('Greetings')
 		]));
-var $elm$html$Html$a = _VirtualDom_node('a');
-var $elm$html$Html$Attributes$href = function (url) {
-	return A2(
-		$elm$html$Html$Attributes$stringProperty,
-		'href',
-		_VirtualDom_noJavaScriptUri(url));
-};
-var $author$project$Components$Link$link = F2(
-	function (path, display) {
-		return A2(
-			$elm$html$Html$a,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$href(path),
-					$elm$html$Html$Attributes$class('no-underline text-center text-heading2 hover:opacity-80')
-				]),
-			_List_fromArray(
-				[
-					$elm$html$Html$text(display)
-				]));
-	});
-var $author$project$Pages$Home$links = A2(
-	$elm$html$Html$div,
-	_List_fromArray(
-		[
-			$elm$html$Html$Attributes$class('flex flex-row justify-center space-x-6 pb-2 border-b border-primary border-opacity-80')
-		]),
-	_List_fromArray(
-		[
-			A2($author$project$Components$Link$link, 'about', 'about'),
-			A2($author$project$Components$Link$link, 'resume', 'resume')
-		]));
+var $author$project$Pages$Home$links = function () {
+	var render = function (opts) {
+		return A2($elm$core$List$map, $author$project$Components$Link$link, opts);
+	};
+	return render(
+		_List_fromArray(
+			[
+				{display: 'about', path: 'about'},
+				{display: 'resume', path: 'resume'}
+			]));
+}();
 var $author$project$Pages$Home$view = _List_fromArray(
 	[
 		A2(
@@ -6164,7 +6202,17 @@ var $author$project$Pages$Home$view = _List_fromArray(
 				$elm$html$Html$Attributes$class('h-full flex flex-col justify-center space-y-6')
 			]),
 		_List_fromArray(
-			[$author$project$Pages$Home$heading, $author$project$Pages$Home$links]))
+			[
+				$author$project$Pages$Home$heading,
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('flex flex-row justify-center space-x-6 pb-2 border-b border-primary border-opacity-80')
+					]),
+				$author$project$Pages$Home$links),
+				A2($elm$html$Html$div, _List_Nil, $author$project$Pages$Home$articleLinks)
+			]))
 	]);
 var $author$project$Pages$NotFound$view = _List_fromArray(
 	[

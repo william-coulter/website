@@ -1,6 +1,6 @@
 module Pages.Home exposing (view)
 
-import Components.Link exposing (link)
+import Components.Link exposing (ArticleLinkOpts, LinkOpts, articleLink, link)
 import Html exposing (Html, div, h1, text)
 import Html.Attributes exposing (class)
 
@@ -12,7 +12,14 @@ import Html.Attributes exposing (class)
 view : List (Html msg)
 view =
     [ div [ class "h-full flex flex-col justify-center space-y-6" ]
-        [ heading, links ]
+        [ heading
+        , div
+            [ class "flex flex-row justify-center space-x-6 pb-2 border-b border-primary border-opacity-80" ]
+            links
+        , div
+            []
+            articleLinks
+        ]
     ]
 
 
@@ -22,8 +29,29 @@ heading =
         [ text "Greetings" ]
 
 
-links : Html msg
+links : List (Html msg)
 links =
-    div [ class "flex flex-row justify-center space-x-6 pb-2 border-b border-primary border-opacity-80" ]
-        -- STARTHERE: Render article link
-        [ link "about" "about", link "resume" "resume" ]
+    let
+        render : List LinkOpts -> List (Html msg)
+        render opts =
+            List.map link opts
+    in
+    render
+        [ { path = "about", display = "about" }
+        , { path = "resume", display = "resume" }
+        ]
+
+
+articleLinks : List (Html msg)
+articleLinks =
+    let
+        render : List ArticleLinkOpts -> List (Html msg)
+        render opts =
+            List.map articleLink opts
+    in
+    render
+        [ { article = "determinism"
+          , display = "A deterministic universe and what to do about it"
+          , date = "01 June 2021"
+          }
+        ]

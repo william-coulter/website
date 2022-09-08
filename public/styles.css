@@ -478,10 +478,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-bottom: auto;
 }
 
-.inline {
-  display: inline;
-}
-
 .flex {
   display: flex;
 }
@@ -516,6 +512,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .justify-center {
   justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
 }
 
 .space-y-6 > :not([hidden]) ~ :not([hidden]) {
@@ -576,6 +576,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 .text-heading1 {
   --tw-text-opacity: 1;
   color: rgb(211 54 130 / var(--tw-text-opacity));
+}
+
+.text-primary {
+  --tw-text-opacity: 1;
+  color: rgb(238 232 213 / var(--tw-text-opacity));
 }
 
 .no-underline {

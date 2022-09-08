@@ -9,4 +9,5 @@ import Html exposing (Html, text)
 
 view : List (Html msg)
 view =
+    -- STARTHERE:
     [ text "About page" ]
