@@ -478,6 +478,14 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-bottom: auto;
 }
 
+.-mt-32 {
+  margin-top: -8rem;
+}
+
+.mt-10 {
+  margin-top: 2.5rem;
+}
+
 .flex {
   display: flex;
 }
@@ -500,6 +508,14 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .w-6\/12 {
   width: 50%;
+}
+
+.max-w-md {
+  max-width: 28rem;
+}
+
+.max-w-sm {
+  max-width: 24rem;
 }
 
 .flex-row {
@@ -560,6 +576,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding-bottom: 0.5rem;
 }
 
+.pb-10 {
+  padding-bottom: 2.5rem;
+}
+
 .text-center {
   text-align: center;
 }
@@ -573,14 +593,14 @@ Ensure the default browser behavior of the `hidden` attribute.
   color: rgb(133 153 0 / var(--tw-text-opacity));
 }
 
-.text-heading1 {
-  --tw-text-opacity: 1;
-  color: rgb(211 54 130 / var(--tw-text-opacity));
-}
-
 .text-primary {
   --tw-text-opacity: 1;
   color: rgb(238 232 213 / var(--tw-text-opacity));
+}
+
+.text-heading1 {
+  --tw-text-opacity: 1;
+  color: rgb(211 54 130 / var(--tw-text-opacity));
 }
 
 .no-underline {

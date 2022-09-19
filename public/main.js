@@ -6100,24 +6100,98 @@ var $author$project$Main$pageSkeleton = function (page) {
 				page)
 			]));
 };
+var $elm$html$Html$a = _VirtualDom_node('a');
+var $elm$html$Html$Attributes$alt = $elm$html$Html$Attributes$stringProperty('alt');
+var $elm$html$Html$Attributes$href = function (url) {
+	return A2(
+		$elm$html$Html$Attributes$stringProperty,
+		'href',
+		_VirtualDom_noJavaScriptUri(url));
+};
+var $elm$html$Html$img = _VirtualDom_node('img');
+var $elm$html$Html$p = _VirtualDom_node('p');
+var $elm$html$Html$Attributes$rel = _VirtualDom_attribute('rel');
+var $elm$html$Html$Attributes$src = function (url) {
+	return A2(
+		$elm$html$Html$Attributes$stringProperty,
+		'src',
+		_VirtualDom_noJavaScriptOrHtmlUri(url));
+};
+var $elm$html$Html$Attributes$target = $elm$html$Html$Attributes$stringProperty('target');
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $author$project$Pages$About$view = _List_fromArray(
 	[
-		$elm$html$Html$text('About page')
+		A2(
+		$elm$html$Html$img,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$src('assets/will.jpeg'),
+				$elm$html$Html$Attributes$alt('A handsome young man'),
+				$elm$html$Html$Attributes$class('mx-auto max-w-sm')
+			]),
+		_List_Nil),
+		A2(
+		$elm$html$Html$p,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('mt-10 text-center text-primary')
+			]),
+		_List_fromArray(
+			[
+				$elm$html$Html$text('Aspiring software engineer living in Sydney, Australia.')
+			])),
+		A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('flex justify-center space-x-6')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$a,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$href('https://www.linkedin.com/in/william-coulter-854511147/'),
+						$elm$html$Html$Attributes$target('_blank'),
+						$elm$html$Html$Attributes$rel('noreferrer')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('LinkedIn')
+					])),
+				A2(
+				$elm$html$Html$a,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$href('https://github.com/william-coulter'),
+						$elm$html$Html$Attributes$target('_blank'),
+						$elm$html$Html$Attributes$rel('noreferrer')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('GitHub')
+					])),
+				A2(
+				$elm$html$Html$a,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$href('https://gitlab.com/william-coulter'),
+						$elm$html$Html$Attributes$target('_blank'),
+						$elm$html$Html$Attributes$rel('noreferrer')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('GitLab')
+					]))
+			]))
 	]);
 var $author$project$Pages$Article$view = function (s) {
 	return _List_fromArray(
 		[
 			$elm$html$Html$text('Article: ' + s)
 		]);
-};
-var $elm$html$Html$a = _VirtualDom_node('a');
-var $elm$html$Html$Attributes$href = function (url) {
-	return A2(
-		$elm$html$Html$Attributes$stringProperty,
-		'href',
-		_VirtualDom_noJavaScriptUri(url));
 };
 var $author$project$Components$Link$link = function (_v0) {
 	var path = _v0.path;
@@ -6134,7 +6208,6 @@ var $author$project$Components$Link$link = function (_v0) {
 				$elm$html$Html$text(display)
 			]));
 };
-var $elm$html$Html$p = _VirtualDom_node('p');
 var $author$project$Components$Link$articleLink = function (_v0) {
 	var article = _v0.article;
 	var display = _v0.display;
