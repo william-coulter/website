@@ -1,10 +1,9 @@
 module Pages.Article exposing (..)
 
-import File exposing (File)
-import Html exposing (Html, article, div, text)
+import Html exposing (Html, div, text)
+import Http
 import Markdown.Parser as MDParser
 import Markdown.Renderer as MDRenderer
-import Task
 
 
 
@@ -12,7 +11,9 @@ import Task
 
 
 type alias Model =
-    { article : String }
+    { articleTitle : String
+    , result : Maybe (Result Http.Error String)
+    }
 
 
 
@@ -20,50 +21,60 @@ type alias Model =
 
 
 init : String -> ( Model, Cmd Msg )
-init article =
-    ( Model article, Cmd.none )
+init articleTitle =
+    ( Model articleTitle Nothing, fetchArticle articleTitle )
+
+
+fetchArticle : String -> Cmd Msg
+fetchArticle _ =
+    Http.get
+        { url = "./assets/articles/you_win_some_and_you_lose_some.md"
+        , expect = Http.expectString ArticleFetched
+        }
 
 
 
 -- UPDATE
 
 
-type alias Msg =
-    {}
+type Msg
+    = ArticleFetched (Result Http.Error String)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
-update _ model =
-    ( model, Cmd.none )
-
-
-
--- STARTHERE: Import as file
-
-
-markdown =
-    "# Hello\nThis is a body!"
-
-
-astResult =
-    markdown
-        |> MDParser.parse
+update msg model =
+    case ( msg, model ) of
+        ( ArticleFetched result, _ ) ->
+            ( { model | result = Just result }, Cmd.none )
 
 
 
 -- VIEW
 
 
-view : String -> List (Html msg)
-view _ =
-    [ case
-        astResult
-            |> Result.mapError (List.map MDParser.deadEndToString >> List.head >> Maybe.withDefault "Error parsing Markdown")
-            |> Result.andThen (\ast -> MDRenderer.render MDRenderer.defaultHtmlRenderer ast)
-      of
-        Ok rendered ->
-            div [] rendered
+view : Model -> List (Html msg)
+view { result } =
+    [ case result of
+        Nothing ->
+            text "Loading..."
 
-        Err errors ->
-            text errors
+        Just r ->
+            case r of
+                Err _ ->
+                    text "Error"
+
+                Ok file ->
+                    case parseMarkdown file of
+                        Err err ->
+                            text err
+
+                        Ok rendered ->
+                            div [] rendered
     ]
+
+
+parseMarkdown : String -> Result String (List (Html msg))
+parseMarkdown md =
+    MDParser.parse md
+        |> Result.mapError (List.map MDParser.deadEndToString >> List.head >> Maybe.withDefault "Error parsing Markdown")
+        |> Result.andThen (\ast -> MDRenderer.render MDRenderer.defaultHtmlRenderer ast)

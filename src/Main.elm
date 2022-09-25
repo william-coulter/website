@@ -116,8 +116,8 @@ view model =
                 About _ _ ->
                     About.view
 
-                Article _ { article } ->
-                    Article.view article
+                Article _ m ->
+                    Article.view m
 
                 NotFound _ _ ->
                     NotFound.view
