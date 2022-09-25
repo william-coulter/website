@@ -17,7 +17,7 @@ routeParser =
         [ map Home top
         , map Home (s "home")
         , map About (s "about")
-        , map Article (s "article" </> string)
+        , map Article (s "articles" </> string)
         ]
 
 
