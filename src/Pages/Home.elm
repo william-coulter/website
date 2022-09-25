@@ -1,8 +1,38 @@
-module Pages.Home exposing (view)
+module Pages.Home exposing (..)
 
 import Components.Link exposing (ArticleLinkOpts, LinkOpts, articleLink, link)
 import Html exposing (Html, div, h1, text)
 import Html.Attributes exposing (class)
+
+
+
+-- MODEL
+
+
+type alias Model =
+    {}
+
+
+
+-- INIT
+
+
+init : ( Model, Cmd Msg )
+init =
+    ( {}, Cmd.none )
+
+
+
+-- UPDATE
+
+
+type alias Msg =
+    {}
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
+update _ model =
+    ( model, Cmd.none )
 
 
 

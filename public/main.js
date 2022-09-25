@@ -5450,96 +5450,6 @@ var $elm$core$Task$perform = F2(
 				A2($elm$core$Task$map, toMessage, task)));
 	});
 var $elm$browser$Browser$application = _Browser_application;
-var $author$project$Main$Model = F2(
-	function (key, url) {
-		return {key: key, url: url};
-	});
-var $elm$core$Platform$Cmd$batch = _Platform_batch;
-var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
-var $author$project$Main$init = F3(
-	function (_v0, url, key) {
-		return _Utils_Tuple2(
-			A2($author$project$Main$Model, key, url),
-			$elm$core$Platform$Cmd$none);
-	});
-var $elm$core$Platform$Sub$batch = _Platform_batch;
-var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
-var $author$project$Main$subscriptions = function (_v0) {
-	return $elm$core$Platform$Sub$none;
-};
-var $elm$browser$Browser$Navigation$load = _Browser_load;
-var $elm$browser$Browser$Navigation$pushUrl = _Browser_pushUrl;
-var $elm$url$Url$addPort = F2(
-	function (maybePort, starter) {
-		if (maybePort.$ === 'Nothing') {
-			return starter;
-		} else {
-			var port_ = maybePort.a;
-			return starter + (':' + $elm$core$String$fromInt(port_));
-		}
-	});
-var $elm$url$Url$addPrefixed = F3(
-	function (prefix, maybeSegment, starter) {
-		if (maybeSegment.$ === 'Nothing') {
-			return starter;
-		} else {
-			var segment = maybeSegment.a;
-			return _Utils_ap(
-				starter,
-				_Utils_ap(prefix, segment));
-		}
-	});
-var $elm$url$Url$toString = function (url) {
-	var http = function () {
-		var _v0 = url.protocol;
-		if (_v0.$ === 'Http') {
-			return 'http://';
-		} else {
-			return 'https://';
-		}
-	}();
-	return A3(
-		$elm$url$Url$addPrefixed,
-		'#',
-		url.fragment,
-		A3(
-			$elm$url$Url$addPrefixed,
-			'?',
-			url.query,
-			_Utils_ap(
-				A2(
-					$elm$url$Url$addPort,
-					url.port_,
-					_Utils_ap(http, url.host)),
-				url.path)));
-};
-var $author$project$Main$update = F2(
-	function (msg, model) {
-		if (msg.$ === 'LinkClicked') {
-			var urlRequest = msg.a;
-			if (urlRequest.$ === 'Internal') {
-				var url = urlRequest.a;
-				return _Utils_Tuple2(
-					model,
-					A2(
-						$elm$browser$Browser$Navigation$pushUrl,
-						model.key,
-						$elm$url$Url$toString(url)));
-			} else {
-				var href = urlRequest.a;
-				return _Utils_Tuple2(
-					model,
-					$elm$browser$Browser$Navigation$load(href));
-			}
-		} else {
-			var url = msg.a;
-			return _Utils_Tuple2(
-				_Utils_update(
-					model,
-					{url: url}),
-				$elm$core$Platform$Cmd$none);
-		}
-	});
 var $elm$url$Url$Parser$State = F5(
 	function (visited, unvisited, params, frag, value) {
 		return {frag: frag, params: params, unvisited: unvisited, value: value, visited: visited};
@@ -6340,6 +6250,166 @@ var $author$project$Routes$routeParser = $elm$url$Url$Parser$oneOf(
 				$elm$url$Url$Parser$string))
 		]));
 var $author$project$Routes$fromUrl = $elm$url$Url$Parser$parse($author$project$Routes$routeParser);
+var $author$project$Main$About = F2(
+	function (a, b) {
+		return {$: 'About', a: a, b: b};
+	});
+var $author$project$Main$Article = F2(
+	function (a, b) {
+		return {$: 'Article', a: a, b: b};
+	});
+var $author$project$Main$Home = F2(
+	function (a, b) {
+		return {$: 'Home', a: a, b: b};
+	});
+var $author$project$Main$NotFound = F2(
+	function (a, b) {
+		return {$: 'NotFound', a: a, b: b};
+	});
+var $elm$core$Platform$Cmd$batch = _Platform_batch;
+var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
+var $author$project$Pages$About$init = _Utils_Tuple2(
+	{},
+	$elm$core$Platform$Cmd$none);
+var $author$project$Pages$Article$Model = function (article) {
+	return {article: article};
+};
+var $author$project$Pages$Article$init = function (article) {
+	return _Utils_Tuple2(
+		$author$project$Pages$Article$Model(article),
+		$elm$core$Platform$Cmd$none);
+};
+var $author$project$Pages$Home$init = _Utils_Tuple2(
+	{},
+	$elm$core$Platform$Cmd$none);
+var $author$project$Pages$NotFound$init = _Utils_Tuple2(
+	{},
+	$elm$core$Platform$Cmd$none);
+var $author$project$Main$modelFromRoute = F2(
+	function (key, r) {
+		if (r.$ === 'Just') {
+			switch (r.a.$) {
+				case 'Home':
+					var _v1 = r.a;
+					return A2($author$project$Main$Home, key, $author$project$Pages$Home$init.a);
+				case 'About':
+					var _v2 = r.a;
+					return A2($author$project$Main$About, key, $author$project$Pages$About$init.a);
+				default:
+					var s = r.a.a;
+					return A2(
+						$author$project$Main$Article,
+						key,
+						$author$project$Pages$Article$init(s).a);
+			}
+		} else {
+			return A2($author$project$Main$NotFound, key, $author$project$Pages$NotFound$init.a);
+		}
+	});
+var $author$project$Main$init = F3(
+	function (_v0, url, key) {
+		var model = A2(
+			$author$project$Main$modelFromRoute,
+			key,
+			$author$project$Routes$fromUrl(url));
+		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+	});
+var $elm$core$Platform$Sub$batch = _Platform_batch;
+var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
+var $author$project$Main$subscriptions = function (_v0) {
+	return $elm$core$Platform$Sub$none;
+};
+var $author$project$Main$getKey = function (model) {
+	switch (model.$) {
+		case 'Home':
+			var key = model.a;
+			return key;
+		case 'About':
+			var key = model.a;
+			return key;
+		case 'Article':
+			var key = model.a;
+			return key;
+		default:
+			var key = model.a;
+			return key;
+	}
+};
+var $elm$browser$Browser$Navigation$load = _Browser_load;
+var $elm$browser$Browser$Navigation$pushUrl = _Browser_pushUrl;
+var $elm$url$Url$addPort = F2(
+	function (maybePort, starter) {
+		if (maybePort.$ === 'Nothing') {
+			return starter;
+		} else {
+			var port_ = maybePort.a;
+			return starter + (':' + $elm$core$String$fromInt(port_));
+		}
+	});
+var $elm$url$Url$addPrefixed = F3(
+	function (prefix, maybeSegment, starter) {
+		if (maybeSegment.$ === 'Nothing') {
+			return starter;
+		} else {
+			var segment = maybeSegment.a;
+			return _Utils_ap(
+				starter,
+				_Utils_ap(prefix, segment));
+		}
+	});
+var $elm$url$Url$toString = function (url) {
+	var http = function () {
+		var _v0 = url.protocol;
+		if (_v0.$ === 'Http') {
+			return 'http://';
+		} else {
+			return 'https://';
+		}
+	}();
+	return A3(
+		$elm$url$Url$addPrefixed,
+		'#',
+		url.fragment,
+		A3(
+			$elm$url$Url$addPrefixed,
+			'?',
+			url.query,
+			_Utils_ap(
+				A2(
+					$elm$url$Url$addPort,
+					url.port_,
+					_Utils_ap(http, url.host)),
+				url.path)));
+};
+var $author$project$Main$update = F2(
+	function (msg, model) {
+		var _v0 = _Utils_Tuple2(msg, model);
+		if (_v0.a.$ === 'LinkClicked') {
+			var urlRequest = _v0.a.a;
+			if (urlRequest.$ === 'Internal') {
+				var url = urlRequest.a;
+				return _Utils_Tuple2(
+					model,
+					A2(
+						$elm$browser$Browser$Navigation$pushUrl,
+						$author$project$Main$getKey(model),
+						$elm$url$Url$toString(url)));
+			} else {
+				var href = urlRequest.a;
+				return _Utils_Tuple2(
+					model,
+					$elm$browser$Browser$Navigation$load(href));
+			}
+		} else {
+			var url = _v0.a.a;
+			return _Utils_Tuple2(
+				A2(
+					$author$project$Main$modelFromRoute,
+					$author$project$Main$getKey(model),
+					$author$project$Routes$fromUrl(url)),
+				$elm$core$Platform$Cmd$none);
+		}
+	});
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -6351,22 +6421,25 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
 var $elm$html$Html$div = _VirtualDom_node('div');
 var $author$project$Main$pageSkeleton = function (page) {
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('flex w-screen h-screen p-4 bg-solarized-dark-base02 overflow-auto')
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('w-6/12 h-2/4 mx-auto my-auto')
-					]),
-				page)
-			]));
+	return _List_fromArray(
+		[
+			A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('flex w-screen h-screen p-4 bg-solarized-dark-base02 overflow-auto')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('w-6/12 h-2/4 mx-auto my-auto')
+						]),
+					page)
+				]))
+		]);
 };
 var $elm$html$Html$a = _VirtualDom_node('a');
 var $elm$html$Html$Attributes$alt = $elm$html$Html$Attributes$stringProperty('alt');
@@ -15460,31 +15533,22 @@ var $author$project$Pages$NotFound$view = _List_fromArray(
 	[
 		$elm$html$Html$text('Not found')
 	]);
-var $author$project$Main$routePage = function (r) {
-	if (r.$ === 'Just') {
-		switch (r.a.$) {
+var $author$project$Main$view = function (model) {
+	var body = function () {
+		switch (model.$) {
 			case 'Home':
-				var _v1 = r.a;
 				return $author$project$Pages$Home$view;
 			case 'About':
-				var _v2 = r.a;
 				return $author$project$Pages$About$view;
+			case 'Article':
+				var article = model.b.article;
+				return $author$project$Pages$Article$view(article);
 			default:
-				var s = r.a.a;
-				return $author$project$Pages$Article$view(s);
+				return $author$project$Pages$NotFound$view;
 		}
-	} else {
-		return $author$project$Pages$NotFound$view;
-	}
-};
-var $author$project$Main$view = function (model) {
+	}();
 	return {
-		body: _List_fromArray(
-			[
-				$author$project$Main$pageSkeleton(
-				$author$project$Main$routePage(
-					$author$project$Routes$fromUrl(model.url)))
-			]),
+		body: $author$project$Main$pageSkeleton(body),
 		title: 'William Coulter'
 	};
 };

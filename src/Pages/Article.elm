@@ -1,10 +1,40 @@
 module Pages.Article exposing (..)
 
 import File exposing (File)
-import Html exposing (Html, div, text)
+import Html exposing (Html, article, div, text)
 import Markdown.Parser as MDParser
 import Markdown.Renderer as MDRenderer
 import Task
+
+
+
+-- MODEL
+
+
+type alias Model =
+    { article : String }
+
+
+
+-- INIT
+
+
+init : String -> ( Model, Cmd Msg )
+init article =
+    ( Model article, Cmd.none )
+
+
+
+-- UPDATE
+
+
+type alias Msg =
+    {}
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
+update _ model =
+    ( model, Cmd.none )
 
 
 

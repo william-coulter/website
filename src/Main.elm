@@ -13,34 +13,56 @@ import Url
 
 
 
--- MAIN
-
-
-main : Program () Model Msg
-main =
-    Browser.application
-        { init = init
-        , view = view
-        , update = update
-        , subscriptions = subscriptions
-        , onUrlChange = UrlChanged
-        , onUrlRequest = LinkClicked
-        }
-
-
-
 -- MODEL
 
 
-type alias Model =
-    { key : Nav.Key
-    , url : Url.Url
-    }
+type Model
+    = Home Nav.Key Home.Model
+    | About Nav.Key About.Model
+    | Article Nav.Key Article.Model
+    | NotFound Nav.Key NotFound.Model
 
 
 init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init _ url key =
-    ( Model key url, Cmd.none )
+    let
+        model =
+            Routes.fromUrl url
+                |> modelFromRoute key
+    in
+    ( model, Cmd.none )
+
+
+getKey : Model -> Nav.Key
+getKey model =
+    case model of
+        Home key _ ->
+            key
+
+        About key _ ->
+            key
+
+        Article key _ ->
+            key
+
+        NotFound key _ ->
+            key
+
+
+modelFromRoute : Nav.Key -> Maybe Routes.Route -> Model
+modelFromRoute key r =
+    case r of
+        Just Routes.Home ->
+            Home.init |> Tuple.first |> Home key
+
+        Just Routes.About ->
+            About.init |> Tuple.first |> About key
+
+        Just (Routes.Article s) ->
+            Article.init s |> Tuple.first |> Article key
+
+        Nothing ->
+            NotFound.init |> Tuple.first |> NotFound key
 
 
 
@@ -54,17 +76,18 @@ type Msg
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case msg of
-        LinkClicked urlRequest ->
+    case ( msg, model ) of
+        ( LinkClicked urlRequest, _ ) ->
             case urlRequest of
                 Browser.Internal url ->
-                    ( model, Nav.pushUrl model.key (Url.toString url) )
+                    ( model, Nav.pushUrl (getKey model) (Url.toString url) )
 
                 Browser.External href ->
                     ( model, Nav.load href )
 
-        UrlChanged url ->
-            ( { model | url = url }
+        ( UrlChanged url, _ ) ->
+            ( Routes.fromUrl url
+                |> modelFromRoute (getKey model)
             , Cmd.none
             )
 
@@ -84,31 +107,43 @@ subscriptions _ =
 
 view : Model -> Browser.Document Msg
 view model =
+    let
+        body =
+            case model of
+                Home _ _ ->
+                    Home.view
+
+                About _ _ ->
+                    About.view
+
+                Article _ { article } ->
+                    Article.view article
+
+                NotFound _ _ ->
+                    NotFound.view
+    in
     { title = "William Coulter"
     , body =
-        [ Routes.fromUrl model.url
-            |> routePage
-            |> pageSkeleton
-        ]
+        pageSkeleton body
     }
 
 
-routePage : Maybe Routes.Route -> List (Html msg)
-routePage r =
-    case r of
-        Just Routes.Home ->
-            Home.view
-
-        Just Routes.About ->
-            About.view
-
-        Just (Routes.Article s) ->
-            Article.view s
-
-        Nothing ->
-            NotFound.view
-
-
-pageSkeleton : List (Html msg) -> Html msg
+pageSkeleton : List (Html msg) -> List (Html msg)
 pageSkeleton page =
-    div [ class "flex w-screen h-screen p-4 bg-solarized-dark-base02 overflow-auto" ] [ div [ class "w-6/12 h-2/4 mx-auto my-auto" ] page ]
+    [ div [ class "flex w-screen h-screen p-4 bg-solarized-dark-base02 overflow-auto" ] [ div [ class "w-6/12 h-2/4 mx-auto my-auto" ] page ] ]
+
+
+
+-- MAIN
+
+
+main : Program () Model Msg
+main =
+    Browser.application
+        { init = init
+        , view = view
+        , update = update
+        , subscriptions = subscriptions
+        , onUrlChange = UrlChanged
+        , onUrlRequest = LinkClicked
+        }
